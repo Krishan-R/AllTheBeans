@@ -76,59 +76,24 @@ public class BeanRepositoryTests : BeanTestBase
         Assert.That(result, Is.Not.Null);
         Assert.Multiple(() =>
         {
-            Assert.That(result.IsBOTD, Is.True);
-            Assert.That(result.Id, Is.Not.Null);
-            Assert.That(result.CostInGBP, Is.Not.EqualTo(0));
-            Assert.That(result.ImageUrl, Is.Not.Null);
-            Assert.That(result.Name, Is.Not.Null);
-            Assert.That(result.Description, Is.Not.Null);
-            Assert.That(result.Country, Is.Not.Null);
-            Assert.That(result.Colour, Is.Not.Null);
+            Assert.That(result.Bean.IsBOTD, Is.True);
+            Assert.That(result.Bean.Id, Is.Not.Null);
+            Assert.That(result.Bean.CostInGBP, Is.Not.EqualTo(0));
+            Assert.That(result.Bean.ImageUrl, Is.Not.Null);
+            Assert.That(result.Bean.Name, Is.Not.Null);
+            Assert.That(result.Bean.Description, Is.Not.Null);
+            Assert.That(result.Bean.Country, Is.Not.Null);
+            Assert.That(result.Bean.Colour, Is.Not.Null);
         });
     }
 
     [Test]
-    public async Task GetBeanOfTheDayAsync_WithoutBeanOfTheDay_SetsNewBeanOfTheDay()
+    public async Task GetBeanOfTheDayAsync_WithoutBeanOfTheDay_ReturnsNull()
     {
-        UpdateCurrentBeanOfTheDay(DateTime.UtcNow);
-        var previousBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
-
         UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-1));
 
         var result = await _beanRepository.GetBeanOfTheDayAsync();
 
-        Assert.That(result, Is.Not.Null);
-        Assert.Multiple(() =>
-        {
-            Assert.That(previousBeanOfTheDay, Is.Not.EqualTo(result).UsingPropertiesComparer());
-            Assert.That(result.IsBOTD, Is.True);
-            Assert.That(result.Id, Is.Not.Null);
-            Assert.That(result.CostInGBP, Is.Not.EqualTo(0));
-            Assert.That(result.ImageUrl, Is.Not.Null);
-            Assert.That(result.Name, Is.Not.Null);
-            Assert.That(result.Description, Is.Not.Null);
-            Assert.That(result.Country, Is.Not.Null);
-            Assert.That(result.Colour, Is.Not.Null);
-        });
-    }
-
-    [Test]
-    public async Task GetBeanOfTheDayAsync_WithoutBeanOfTheDay_UpdatesPreviousIsBOTDField()
-    {
-        UpdateCurrentBeanOfTheDay(DateTime.UtcNow);
-        var previousBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
-
-        UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-1));
-
-        var newBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
-
-        var previousBean = await _beanRepository.GetBeanAsync(previousBeanOfTheDay.Id);
-
-        Assert.That(previousBean, Is.Not.Null);
-        Assert.Multiple(() =>
-        {
-            Assert.That(previousBean.IsBOTD, Is.False);
-            Assert.That(newBeanOfTheDay.IsBOTD, Is.True);
-        });
+        Assert.That(result, Is.Null);
     }
 }
