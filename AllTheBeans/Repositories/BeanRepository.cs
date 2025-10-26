@@ -60,11 +60,22 @@ public class BeanRepository : IBeanRepository
             .OrderByDescending(bean => bean.Date)
             .FirstAsync();
 
-        var eligibleBeans = await _dbContext.Beans
+        var beans = await _dbContext.Beans
             .Include(bean => bean.Country)
             .Include(bean => bean.Colour)
-            .Where(x => x.Id != lastBeanOfTheDay.BeanId)
             .ToListAsync();
+
+        var previousBeanOfTheDay = beans
+            .Where(b => b.IsBOTD)
+            .Select(b =>
+        {
+            b.IsBOTD = false;
+            return b;
+        }).ToList();
+
+        _dbContext.Beans.UpdateRange(previousBeanOfTheDay);
+
+        var eligibleBeans = beans.Where(x => x.Id != lastBeanOfTheDay.BeanId).ToList();
 
         var random = new Random();
         var chosenBean = random.Next(eligibleBeans.Count);
@@ -75,6 +86,9 @@ public class BeanRepository : IBeanRepository
             BeanId = eligibleBeans[chosenBean].Id,
             Bean = eligibleBeans[chosenBean]
         };
+
+        eligibleBeans[chosenBean].IsBOTD = true;
+        _dbContext.Beans.Update(eligibleBeans[chosenBean]);
 
         _dbContext.BeanOfTheDay.Add(newBeanOfTheDay);
         await _dbContext.SaveChangesAsync();

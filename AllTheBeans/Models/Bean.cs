@@ -5,7 +5,7 @@ namespace AllTheBeans.Models;
 public class Bean
 {
     public required string Id { get; init; }
-    public bool IsBOTD { get; init; }
+    public bool IsBOTD { get; set; }
     public double CostInGBP { get; init; }
     public required string ImageUrl { get; init; }
     public required string Name { get; init; }
