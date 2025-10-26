@@ -14,20 +14,6 @@ namespace AllTheBeans.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BeanOfTheDay",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BeanId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BeanOfTheDay", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Colours",
                 columns: table => new
                 {
@@ -83,6 +69,26 @@ namespace AllTheBeans.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BeanOfTheDay",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BeanId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BeanOfTheDay", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BeanOfTheDay_Beans_BeanId",
+                        column: x => x.BeanId,
+                        principalTable: "Beans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Colours",
                 columns: new[] { "Id", "ColourName" },
@@ -128,6 +134,16 @@ namespace AllTheBeans.Migrations
                     { "66a37459cc0f1fb1d1a24cf0", 3, 32.77f, 1, "Pariatur qui Lorem sunt labore Lorem nulla nulla ea excepteur Lorem cillum amet. Amet ea officia incididunt culpa non. Do reprehenderit qui eiusmod dolore est deserunt labore do et dolore eiusmod quis elit.\r\n", "https://images.unsplash.com/photo-1692299108333-471157a30882", false, "KLUGGER" },
                     { "66a37459cca42ce9e15676a3", 5, 37.91f, 3, "Veniam laborum consequat minim laborum mollit id ea Lorem in. Labore aliqua dolore quis sunt aliquip commodo aute excepteur. Voluptate tempor consequat pariatur do esse consectetur sunt ut mollit magna enim.\r\n", "https://images.unsplash.com/photo-1522120378538-41fb9564bc75", false, "PARAGONIA" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "BeanOfTheDay",
+                columns: new[] { "Id", "BeanId", "Date" },
+                values: new object[] { 1, "66a37459771606d916a226ff", new DateTime(2025, 10, 26, 15, 19, 1, 812, DateTimeKind.Utc).AddTicks(2620) });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BeanOfTheDay_BeanId",
+                table: "BeanOfTheDay",
+                column: "BeanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Beans_ColourId",

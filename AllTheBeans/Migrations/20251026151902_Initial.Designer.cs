@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AllTheBeans.Migrations
 {
     [DbContext(typeof(AllTheBeansDbContext))]
-    [Migration("20251026151551_Initial")]
+    [Migration("20251026151902_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -240,14 +240,24 @@ namespace AllTheBeans.Migrations
 
                     b.Property<string>("BeanId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BeanId");
+
                     b.ToTable("BeanOfTheDay");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BeanId = "66a37459771606d916a226ff",
+                            Date = new DateTime(2025, 10, 26, 15, 19, 1, 812, DateTimeKind.Utc).AddTicks(2620)
+                        });
                 });
 
             modelBuilder.Entity("AllTheBeans.Models.Colour", b =>
@@ -361,6 +371,17 @@ namespace AllTheBeans.Migrations
                     b.Navigation("Colour");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("AllTheBeans.Models.BeanOfTheDay", b =>
+                {
+                    b.HasOne("AllTheBeans.Models.Bean", "Bean")
+                        .WithMany()
+                        .HasForeignKey("BeanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bean");
                 });
 #pragma warning restore 612, 618
         }
