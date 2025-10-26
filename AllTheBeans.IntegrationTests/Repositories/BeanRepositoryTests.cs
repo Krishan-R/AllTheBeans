@@ -111,4 +111,24 @@ public class BeanRepositoryTests : BeanTestBase
             Assert.That(result.Colour, Is.Not.Null);
         });
     }
+
+    [Test]
+    public async Task GetBeanOfTheDayAsync_WithoutBeanOfTheDay_UpdatesPreviousIsBOTDField()
+    {
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow);
+        var previousBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
+
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-1));
+
+        var newBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
+
+        var previousBean = await _beanRepository.GetBeanAsync(previousBeanOfTheDay.Id);
+
+        Assert.That(previousBean, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(previousBean.IsBOTD, Is.False);
+            Assert.That(newBeanOfTheDay.IsBOTD, Is.True);
+        });
+    }
 }
