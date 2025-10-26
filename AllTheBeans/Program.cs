@@ -16,6 +16,16 @@ internal abstract class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        var connectionString = builder.Configuration.GetConnectionString("SqlServer");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("Could not find suitable Connection String");
+        }
+
+        builder.Services.AddHealthChecks()
+            .AddSqlServer(connectionString);
+
         builder.Logging.AddOpenTelemetry(options => options
                 .SetResourceBuilder(ResourceBuilder.CreateDefault()
                     .AddService(nameof(AllTheBeans)))
@@ -50,6 +60,10 @@ internal abstract class Program
         app.MapControllers();
 
         app.MapPrometheusScrapingEndpoint();
+
+        app.MapHealthChecks("/Health");
+
+        app.UseHealthChecksPrometheusExporter("/metrics");
 
         app.Run();
     }

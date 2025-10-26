@@ -7,6 +7,16 @@
       dockerfile: Dockerfile
     ports:
      - 8080:8080
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "AllTheB3an$"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
   jaeger:
     container_name: jaeger
     command: '--set receivers.otlp.protocols.http.endpoint=0.0.0.0:4318 --set receivers.otlp.protocols.grpc.endpoint=0.0.0.0:4317'
@@ -19,4 +29,7 @@
     - '4317:4317'
     - '16686:16686'
     - '5778:5778'
+
+volumes:
+  sqlserverdata:
 
