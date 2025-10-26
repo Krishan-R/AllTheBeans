@@ -1,3 +1,6 @@
+using AllTheBeans.Database;
+using AllTheBeans.Models;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -41,6 +44,14 @@ internal abstract class Program
                 .AddPrometheusExporter()
                 .AddAspNetCoreInstrumentation()
                 .AddOtlpExporter());
+
+        builder.Services.AddDbContextPool<AllTheBeansDbContext>(opt => opt
+            .UseSqlServer(connectionString)
+            .UseSeeding((context, _) =>
+            {
+                // todo load data from json
+            })
+        );
 
         var app = builder.Build();
 
