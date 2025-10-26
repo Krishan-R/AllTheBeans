@@ -28,6 +28,7 @@ internal abstract class Program
                 .AddAspNetCoreInstrumentation()
                 .AddOtlpExporter())
             .WithMetrics(providerBuilder => providerBuilder
+                .AddPrometheusExporter()
                 .AddAspNetCoreInstrumentation()
                 .AddOtlpExporter());
 
@@ -47,6 +48,8 @@ internal abstract class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.MapPrometheusScrapingEndpoint();
 
         app.Run();
     }
