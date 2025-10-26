@@ -24,8 +24,6 @@ internal abstract class Program
             });
         }
 
-        app.UseHttpsRedirection();
-
         app.UseAuthorization();
 
         app.MapControllers();
