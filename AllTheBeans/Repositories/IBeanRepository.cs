@@ -1,8 +1,8 @@
 using AllTheBeans.Models;
 
-namespace AllTheBeans.Services;
+namespace AllTheBeans.Repositories;
 
-public interface IBeanService
+public interface IBeanRepository
 {
     public Task<List<Bean>> GetAllBeansAsync();
     public Task<Bean> GetBeanAsync(string beanId);

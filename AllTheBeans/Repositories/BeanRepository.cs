@@ -1,16 +1,16 @@
+using AllTheBeans.Database;
 using AllTheBeans.Models;
-using AllTheBeans.Repositories;
 
-namespace AllTheBeans.Services;
+namespace AllTheBeans.Repositories;
 
-public class BeanService : IBeanService
+public class BeanRepository : IBeanRepository
 {
-    private readonly IBeanRepository _beanRepository;
-    private readonly ILogger<BeanService> _logger;
+    private readonly AllTheBeansDbContext _dbContext;
+    private readonly ILogger<BeanRepository> _logger;
 
-    public BeanService(IBeanRepository beanRepository, ILogger<BeanService> logger)
+    public BeanRepository(AllTheBeansDbContext dbContext, ILogger<BeanRepository> logger)
     {
-        _beanRepository = beanRepository;
+        _dbContext = dbContext;
         _logger = logger;
     }
 
