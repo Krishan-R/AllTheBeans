@@ -26,4 +26,17 @@ public abstract class BeanTestBase : IntegrationTestBase
                            VALUES (@Id, 0, @CostInGbp, @ImageUrl, @Name, @Description, @CountryId, @ColourId)
                            """, parameters);
     }
+
+    protected void UpdateCurrentBeanOfTheDay(DateTime dateTime)
+    {
+        using var connection = new SqlConnection(ConnectionString);
+        connection.Open();
+
+        var parameters = new DynamicParameters();
+        parameters.Add("@DateTime", dateTime);
+
+        connection.Execute("""
+                           UPDATE [dbo].[BeanOfTheDay] SET Date = @DateTime
+                           """, parameters);
+    }
 }

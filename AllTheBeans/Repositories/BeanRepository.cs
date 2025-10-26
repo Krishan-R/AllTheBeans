@@ -41,6 +41,8 @@ public class BeanRepository : IBeanRepository
 
         var beanOfTheDay = await _dbContext.BeanOfTheDay
             .Include(bean => bean.Bean)
+            .Include(bean => bean.Bean.Country)
+            .Include(bean => bean.Bean.Colour)
             .SingleOrDefaultAsync(bean => bean.Date.Date == DateTime.UtcNow.Date);
 
         if (beanOfTheDay is not null)

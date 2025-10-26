@@ -31,7 +31,6 @@ public class BeanRepositoryTests : BeanTestBase
             Assert.That(results.First().Country, Is.Not.Null);
             Assert.That(results.First().Colour, Is.Not.Null);
         });
-
     }
 
     [Test]
@@ -64,6 +63,52 @@ public class BeanRepositoryTests : BeanTestBase
             Assert.That(result.ImageUrl, Is.EqualTo(imageUrl));
             Assert.That(result.Name, Is.EqualTo(beanName));
             Assert.That(result.Description, Is.EqualTo(beanDescription));
+        });
+    }
+
+    [Test]
+    public async Task GetBeanOfTheDayAsync_ReturnsBeanOfTheDay()
+    {
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow);
+
+        var result = await _beanRepository.GetBeanOfTheDayAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsBOTD, Is.True);
+            Assert.That(result.Id, Is.Not.Null);
+            Assert.That(result.CostInGBP, Is.Not.EqualTo(0));
+            Assert.That(result.ImageUrl, Is.Not.Null);
+            Assert.That(result.Name, Is.Not.Null);
+            Assert.That(result.Description, Is.Not.Null);
+            Assert.That(result.Country, Is.Not.Null);
+            Assert.That(result.Colour, Is.Not.Null);
+        });
+    }
+
+    [Test]
+    public async Task GetBeanOfTheDayAsync_WithoutBeanOfTheDay_SetsNewBeanOfTheDay()
+    {
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow);
+        var previousBeanOfTheDay = await _beanRepository.GetBeanOfTheDayAsync();
+
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-1));
+
+        var result = await _beanRepository.GetBeanOfTheDayAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(previousBeanOfTheDay, Is.Not.EqualTo(result).UsingPropertiesComparer());
+            Assert.That(result.IsBOTD, Is.True);
+            Assert.That(result.Id, Is.Not.Null);
+            Assert.That(result.CostInGBP, Is.Not.EqualTo(0));
+            Assert.That(result.ImageUrl, Is.Not.Null);
+            Assert.That(result.Name, Is.Not.Null);
+            Assert.That(result.Description, Is.Not.Null);
+            Assert.That(result.Country, Is.Not.Null);
+            Assert.That(result.Colour, Is.Not.Null);
         });
     }
 }
