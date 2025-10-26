@@ -49,7 +49,11 @@ internal abstract class Program
             .UseSqlServer(connectionString)
             .UseSeeding((context, _) =>
             {
-                // todo load data from json
+                var json = File.ReadAllText("AllTheBeans 1 (1).json");
+                var (beans, beanOfTheDay, colours, countries) = JsonBeanMapper.MapFromJson(json);
+
+                context.Set<Country>().AddRange(countries);
+                context.SaveChanges();
             })
         );
 

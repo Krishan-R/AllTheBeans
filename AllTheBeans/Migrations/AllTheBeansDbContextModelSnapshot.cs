@@ -58,7 +58,7 @@ namespace AllTheBeans.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Beans");
+                    b.ToTable("Beans", (string)null);
                 });
 
             modelBuilder.Entity("AllTheBeans.Models.BeanOfTheDay", b =>
@@ -77,7 +77,7 @@ namespace AllTheBeans.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BeanOfTheDay");
+                    b.ToTable("BeanOfTheDay", (string)null);
                 });
 
             modelBuilder.Entity("AllTheBeans.Models.Colour", b =>
@@ -94,7 +94,7 @@ namespace AllTheBeans.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colours");
+                    b.ToTable("Colours", (string)null);
                 });
 
             modelBuilder.Entity("AllTheBeans.Models.Country", b =>
@@ -111,7 +111,7 @@ namespace AllTheBeans.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("AllTheBeans.Models.Bean", b =>
