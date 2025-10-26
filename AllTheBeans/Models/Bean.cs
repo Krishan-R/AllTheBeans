@@ -11,11 +11,11 @@ public class Bean
     public required string Name { get; init; }
     public required string Description { get; init; }
 
-    public Country Country { get; init; }
     [ForeignKey("CountryId")]
     public int CountryId { get; set; }
+    public Country Country { get; init; }
 
-    public Colour Colour { get; init; }
     [ForeignKey("ColourId")]
     public int ColourId { get; set; }
+    public Colour Colour { get; init; }
 }
