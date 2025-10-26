@@ -1,3 +1,8 @@
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
 namespace AllTheBeans;
 
 internal abstract class Program
@@ -10,6 +15,21 @@ internal abstract class Program
         builder.Services.AddOpenApi();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Logging.AddOpenTelemetry(options => options
+                .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                    .AddService(nameof(AllTheBeans)))
+                .AddOtlpExporter()
+        );
+
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resourceBuilder => resourceBuilder.AddService(nameof(AllTheBeans)))
+            .WithTracing(providerBuilder => providerBuilder
+                .AddAspNetCoreInstrumentation()
+                .AddOtlpExporter())
+            .WithMetrics(providerBuilder => providerBuilder
+                .AddAspNetCoreInstrumentation()
+                .AddOtlpExporter());
 
         var app = builder.Build();
 
