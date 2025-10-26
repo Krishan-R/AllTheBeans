@@ -19,8 +19,7 @@ public static class JsonBeanMapper
         var beans = MapBeans(jsonBeans, countries, colours);
         var beanOfTheDay = MapBeanOfTheDay(jsonBeans);
 
-        return (beans, [], colours, countries);
-        // return ([], [], colours, countries);
+        return (beans, beanOfTheDay, colours, countries);
     }
 
     private static IEnumerable<Country> MapCountries(IEnumerable<JsonBean> jsonBeans)
@@ -54,10 +53,8 @@ public static class JsonBeanMapper
                 CostInGBP = float.Parse(x.Cost[1..]),
                 ImageUrl = x.Image,
                 Description = x.Description,
-                Country = country,
-                // CountryId = country.Id,
-                Colour = colour,
-                // ColourId = colour.Id
+                CountryId = country.Id,
+                ColourId = colour.Id
             };
         });
 

@@ -20,18 +20,19 @@ public class AllTheBeansDbContext(DbContextOptions<AllTheBeansDbContext> options
         modelBuilder.Entity<Country>(builder =>
         {
             builder.HasIndex(c => c.CountryName).IsUnique();
+
             builder.HasData(countries);
         });
 
         modelBuilder.Entity<Colour>(builder =>
         {
             builder.HasIndex(c => c.ColourName).IsUnique();
+
             builder.HasData(colours);
         });
 
         modelBuilder.Entity<Bean>(builder =>
         {
-            builder.HasIndex(b => b.Name).IsUnique();
             builder.HasData(beans);
         });
 
