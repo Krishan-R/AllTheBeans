@@ -1,7 +1,22 @@
 ﻿services:
   allthebeans:
+    container_name: allthebeans
     image: allthebeans
     build:
       context: .
-      dockerfile: AllTheBeans/Dockerfile
+      dockerfile: Dockerfile
+    ports:
+     - 8080:8080
+  jaeger:
+    container_name: jaeger
+    command: '--set receivers.otlp.protocols.http.endpoint=0.0.0.0:4318 --set receivers.otlp.protocols.grpc.endpoint=0.0.0.0:4317'
+    image: 'jaegertracing/jaeger:2.0.0'
+    ports:
+    - '9411:9411'
+    - '14268:14268'
+    - '14250:14250'
+    - '4318:4318'
+    - '4317:4317'
+    - '16686:16686'
+    - '5778:5778'
 
