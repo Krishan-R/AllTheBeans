@@ -16,16 +16,19 @@ public class BeanService : IBeanService
 
     public Task<List<Bean>> GetAllBeansAsync()
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called", nameof(GetAllBeansAsync));
+        return _beanRepository.GetAllBeansAsync();
     }
 
     public Task<Bean> GetBeanAsync(string beanId)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called with BeanId: '{BeanId}'", nameof(GetBeanAsync), beanId);
+        return _beanRepository.GetBeanAsync(beanId);
     }
 
     public Task<Bean> GetBeanOfTheDayAsync()
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called", nameof(GetBeanOfTheDayAsync));
+        return _beanRepository.GetBeanOfTheDayAsync();
     }
 }
