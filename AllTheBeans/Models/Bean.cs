@@ -8,7 +8,7 @@ public class Bean
     public bool IsBOTD { get; set; }
     public double CostInGBP { get; init; }
     public required string ImageUrl { get; init; }
-    public required string Name { get; init; }
+    public required string Name { get; set; }
     public required string Description { get; init; }
 
     [ForeignKey("CountryId")]

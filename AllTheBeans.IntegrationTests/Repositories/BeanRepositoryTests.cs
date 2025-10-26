@@ -1,3 +1,4 @@
+using AllTheBeans.Models;
 using AllTheBeans.Repositories;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -95,5 +96,87 @@ public class BeanRepositoryTests : BeanTestBase
         var result = await _beanRepository.GetBeanOfTheDayAsync();
 
         Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public async Task GetLastBeanOfTheDayAsync_ReturnsTheLatestBeanOfTheDay()
+    {
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-1));
+
+        var result = await _beanRepository.GetLastBeanOfTheDayAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Bean.IsBOTD, Is.True);
+            Assert.That(result.Bean.Id, Is.Not.Null);
+            Assert.That(result.Bean.CostInGBP, Is.Not.EqualTo(0));
+            Assert.That(result.Bean.ImageUrl, Is.Not.Null);
+            Assert.That(result.Bean.Name, Is.Not.Null);
+            Assert.That(result.Bean.Description, Is.Not.Null);
+            Assert.That(result.Bean.Country, Is.Not.Null);
+            Assert.That(result.Bean.Colour, Is.Not.Null);
+        });
+    }
+
+    [Test]
+    public async Task UpdateBeanAsync_UpdatesBean()
+    {
+        var bean = (await _beanRepository.GetAllBeansAsync()).First();
+
+        bean.Name = "new name";
+
+        await _beanRepository.UpdateBeanAsync(bean);
+
+        var result = await _beanRepository.GetBeanAsync(bean.Id);
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Name, Is.EqualTo("new name"));
+    }
+
+    [Test]
+    public async Task UpdateBeansAsync_UpdatesBean()
+    {
+        var beans = (await _beanRepository.GetAllBeansAsync());
+
+        beans = beans.Select(x =>
+        {
+            x.Name = "new name";
+            return x;
+        }).ToList();
+
+        await _beanRepository.UpdateBeansAsync(beans);
+
+        var result = await _beanRepository.GetAllBeansAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Has.All.With.Property("Name").EqualTo("new name"));
+    }
+
+    [Test]
+    public async Task SetNewBeanOfTheDayAsync_AddsNewRecord()
+    {
+        UpdateCurrentBeanOfTheDay(DateTime.UtcNow.AddDays(-5));
+
+        var beans = await _beanRepository.GetAllBeansAsync();
+        var beanOfTheDay = new BeanOfTheDay
+        {
+            Date = DateTime.UtcNow,
+            BeanId = beans[3].Id,
+            Bean = beans[3]
+        };
+
+        await _beanRepository.SetNewBeanOfTheDayAsync(beanOfTheDay);
+
+        var result = await _beanRepository.GetBeanOfTheDayAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.BeanId, Is.EqualTo(beans[3].Id));
+            Assert.That(result.Bean, Is.EqualTo(beans[3]).UsingPropertiesComparer());
+            Assert.That(result.Date, Is.EqualTo(DateTime.UtcNow).Within(3).Seconds);
+            Assert.That(result.Id, Is.Not.EqualTo(0));
+        });
     }
 }

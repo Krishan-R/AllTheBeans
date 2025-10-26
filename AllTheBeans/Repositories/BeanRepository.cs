@@ -52,6 +52,8 @@ public class BeanRepository : IBeanRepository
     {
         return await _dbContext.BeanOfTheDay
             .Include(bean => bean.Bean)
+            .Include(bean => bean.Bean.Country)
+            .Include(bean => bean.Bean.Colour)
             .OrderByDescending(bean => bean.Date)
             .FirstAsync();
     }
