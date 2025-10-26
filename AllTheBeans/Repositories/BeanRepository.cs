@@ -35,8 +35,48 @@ public class BeanRepository : IBeanRepository
             .SingleOrDefaultAsync(bean => bean.Id == beanId);
     }
 
-    public Task<Bean> GetBeanOfTheDayAsync()
+    public async Task<Bean> GetBeanOfTheDayAsync()
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called", nameof(GetBeanOfTheDayAsync));
+
+        var beanOfTheDay = await _dbContext.BeanOfTheDay
+            .Include(bean => bean.Bean)
+            .SingleOrDefaultAsync(bean => bean.Date.Date == DateTime.UtcNow.Date);
+
+        if (beanOfTheDay is not null)
+        {
+            return beanOfTheDay.Bean;
+        }
+
+        await GenerateBeanOfTheDayAsync();
+
+        return await GetBeanOfTheDayAsync();
+    }
+
+    private async Task GenerateBeanOfTheDayAsync()
+    {
+        var lastBeanOfTheDay = await _dbContext.BeanOfTheDay
+            .Include(bean => bean.Bean)
+            .OrderByDescending(bean => bean.Date)
+            .FirstAsync();
+
+        var eligibleBeans = await _dbContext.Beans
+            .Include(bean => bean.Country)
+            .Include(bean => bean.Colour)
+            .Where(x => x.Id != lastBeanOfTheDay.BeanId)
+            .ToListAsync();
+
+        var random = new Random();
+        var chosenBean = random.Next(eligibleBeans.Count);
+
+        var newBeanOfTheDay = new BeanOfTheDay
+        {
+            Date = DateTime.UtcNow,
+            BeanId = eligibleBeans[chosenBean].Id,
+            Bean = eligibleBeans[chosenBean]
+        };
+
+        _dbContext.BeanOfTheDay.Add(newBeanOfTheDay);
+        await _dbContext.SaveChangesAsync();
     }
 }
