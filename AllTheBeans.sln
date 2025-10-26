@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllTheBeans.UnitTests", "Al
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C0FC2C0B-3501-43D2-BA08-A737C0D43B05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllTheBeans.IntegrationTests", "AllTheBeans.IntegrationTests\AllTheBeans.IntegrationTests.csproj", "{E0F3C0C7-B046-4DBE-9348-17D44F8DA416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,8 +30,13 @@ Global
 		{7980BB21-956A-4939-86A3-AAC92E97047D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7980BB21-956A-4939-86A3-AAC92E97047D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7980BB21-956A-4939-86A3-AAC92E97047D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0F3C0C7-B046-4DBE-9348-17D44F8DA416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0F3C0C7-B046-4DBE-9348-17D44F8DA416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0F3C0C7-B046-4DBE-9348-17D44F8DA416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0F3C0C7-B046-4DBE-9348-17D44F8DA416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7980BB21-956A-4939-86A3-AAC92E97047D} = {C0FC2C0B-3501-43D2-BA08-A737C0D43B05}
+		{E0F3C0C7-B046-4DBE-9348-17D44F8DA416} = {C0FC2C0B-3501-43D2-BA08-A737C0D43B05}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 using AllTheBeans.Database;
+using AllTheBeans.Repositories;
 using AllTheBeans.Services;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Logs;
@@ -49,6 +50,7 @@ internal abstract class Program
             .UseSqlServer(connectionString));
 
         builder.Services.AddScoped<IBeanService, BeanService>();
+        builder.Services.AddScoped<IBeanRepository, BeanRepository>();
 
         var app = builder.Build();
 
