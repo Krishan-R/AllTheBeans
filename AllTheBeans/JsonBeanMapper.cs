@@ -5,7 +5,7 @@ namespace AllTheBeans;
 
 public static class JsonBeanMapper
 {
-    public static (List<Bean>, List<BeanOfTheDay>, List<Colour>, IEnumerable<Country>) MapFromJson(string json)
+    public static (IEnumerable<Bean>, IEnumerable<BeanOfTheDay>, IEnumerable<Colour>, IEnumerable<Country>) MapFromJson(string json)
     {
         var jsonBeans = JsonSerializer.Deserialize<List<JsonBean>>(json);
 
@@ -15,13 +15,23 @@ public static class JsonBeanMapper
         }
 
         var countries = MapCountries(jsonBeans);
+        var colours = MapColours(jsonBeans);
 
-        return ([], [], [], countries);
+        return ([], [], colours, countries);
+    }
+
+    private static IEnumerable<Colour> MapColours(List<JsonBean> jsonBeans)
+    {
+        var colours = jsonBeans.Select(x => x.colour).Distinct()
+            .Select((y, index) => new Colour { ColourName = y, Id = index + 1});
+
+        return colours;
     }
 
     private static IEnumerable<Country> MapCountries(List<JsonBean> jsonBeans)
     {
-        var countries = jsonBeans.Select(x => x.Country).Distinct().Select(y => new Country{ CountryName = y});
+        var countries = jsonBeans.Select(x => x.Country).Distinct()
+            .Select((y, index) => new Country { CountryName = y, Id = index + 1});
 
         return countries;
     }

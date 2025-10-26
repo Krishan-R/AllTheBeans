@@ -1,5 +1,4 @@
 using AllTheBeans.Database;
-using AllTheBeans.Models;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -46,16 +45,7 @@ internal abstract class Program
                 .AddOtlpExporter());
 
         builder.Services.AddDbContextPool<AllTheBeansDbContext>(opt => opt
-            .UseSqlServer(connectionString)
-            .UseSeeding((context, _) =>
-            {
-                var json = File.ReadAllText("AllTheBeans 1 (1).json");
-                var (beans, beanOfTheDay, colours, countries) = JsonBeanMapper.MapFromJson(json);
-
-                context.Set<Country>().AddRange(countries);
-                context.SaveChanges();
-            })
-        );
+            .UseSqlServer(connectionString));
 
         var app = builder.Build();
 
