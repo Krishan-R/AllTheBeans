@@ -14,21 +14,21 @@ public class BeanService : IBeanService
         _logger = logger;
     }
 
-    public Task<List<Bean>> GetAllBeansAsync()
+    public async Task<List<Bean>> GetAllBeansAsync()
     {
         _logger.LogDebug("{Method} called", nameof(GetAllBeansAsync));
-        return _beanRepository.GetAllBeansAsync();
+        return await _beanRepository.GetAllBeansAsync();
     }
 
-    public Task<Bean> GetBeanAsync(string beanId)
+    public async Task<Bean?> GetBeanAsync(string beanId)
     {
         _logger.LogDebug("{Method} called with BeanId: '{BeanId}'", nameof(GetBeanAsync), beanId);
-        return _beanRepository.GetBeanAsync(beanId);
+        return await _beanRepository.GetBeanAsync(beanId);
     }
 
-    public Task<Bean> GetBeanOfTheDayAsync()
+    public async Task<Bean> GetBeanOfTheDayAsync()
     {
         _logger.LogDebug("{Method} called", nameof(GetBeanOfTheDayAsync));
-        return _beanRepository.GetBeanOfTheDayAsync();
+        return await _beanRepository.GetBeanOfTheDayAsync();
     }
 }

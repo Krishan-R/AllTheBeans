@@ -37,7 +37,13 @@ public class BeansController
         try
         {
             var bean = await _beanService.GetBeanAsync(beanId);
-            return Results.Ok(bean);
+
+            if (bean is not null)
+            {
+                return Results.Ok(bean);
+            }
+
+            return Results.NotFound();
         }
         catch (Exception e)
         {

@@ -59,6 +59,19 @@ public class BeansControllerTests : BeanTestBase
     }
 
     [Test]
+    public async Task GetBeanAsync_WhenBeanNotFound_Returns404()
+    {
+        _mockBeanService.Setup(x => x.GetBeanAsync(It.IsAny<string>()))
+            .ReturnsAsync((Bean)null!)
+            .Verifiable(Times.Once);
+
+        var result = await _beansController.GetBeanAsync("unknown bean");
+
+        Assert.That((Microsoft.AspNetCore.Http.HttpResults.NotFound)result, Is.Not.Null);
+        _mockBeanService.Verify();
+    }
+
+    [Test]
     public async Task GetBeanAsync_WhenExceptionThrown_Returns500()
     {
         _mockBeanService.Setup(x => x.GetBeanAsync(It.IsAny<string>()))

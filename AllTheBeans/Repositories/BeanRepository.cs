@@ -1,5 +1,6 @@
 using AllTheBeans.Database;
 using AllTheBeans.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AllTheBeans.Repositories;
 
@@ -14,14 +15,24 @@ public class BeanRepository : IBeanRepository
         _logger = logger;
     }
 
-    public Task<List<Bean>> GetAllBeansAsync()
+    public async Task<List<Bean>> GetAllBeansAsync()
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called", nameof(GetAllBeansAsync));
+
+        return await _dbContext.Beans
+            .Include(bean => bean.Country)
+            .Include(bean => bean.Colour)
+            .ToListAsync();
     }
 
-    public Task<Bean> GetBeanAsync(string beanId)
+    public async Task<Bean?> GetBeanAsync(string beanId)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("{Method} called", nameof(GetBeanAsync));
+
+        return await _dbContext.Beans
+            .Include(bean => bean.Country)
+            .Include(bean => bean.Colour)
+            .SingleOrDefaultAsync(bean => bean.Id == beanId);
     }
 
     public Task<Bean> GetBeanOfTheDayAsync()
