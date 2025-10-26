@@ -23,4 +23,12 @@ public class JsonBeanMapperTests
             Assert.That(countries.ToList(), Has.Count.EqualTo(5));
         });
     }
+
+    [Test]
+    public void MapFromJson_InvalidJson_ThrowsInvalidOperationException()
+    {
+        var exception = Assert.Throws<InvalidOperationException>(() => JsonBeanMapper.MapFromJson("null"));
+
+        Assert.That(exception.Message, Is.EqualTo("Unable to parse provided JSON"));
+    }
 }

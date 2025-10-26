@@ -7,12 +7,7 @@ public static class JsonBeanMapper
 {
     public static (IEnumerable<Bean>, IEnumerable<BeanOfTheDay>, IEnumerable<Colour>, IEnumerable<Country>) MapFromJson(string json)
     {
-        var jsonBeans = JsonSerializer.Deserialize<List<JsonBean>>(json);
-
-        if (jsonBeans is null)
-        {
-            throw new InvalidOperationException("Unable to parse provided JSON");
-        }
+        var jsonBeans = JsonSerializer.Deserialize<List<JsonBean>>(json) ?? throw new InvalidOperationException("Unable to parse provided JSON");
 
         var countries = MapCountries(jsonBeans);
         var colours = MapColours(jsonBeans);
