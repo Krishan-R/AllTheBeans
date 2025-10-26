@@ -1,4 +1,5 @@
 using AllTheBeans.Database;
+using AllTheBeans.Services;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -46,6 +47,8 @@ internal abstract class Program
 
         builder.Services.AddDbContextPool<AllTheBeansDbContext>(opt => opt
             .UseSqlServer(connectionString));
+
+        builder.Services.AddScoped<IBeanService, BeanService>();
 
         var app = builder.Build();
 
