@@ -6,7 +6,7 @@ public class Bean
 {
     public required string Id { get; init; }
     public bool IsBOTD { get; init; }
-    public float CostInGBP { get; init; }
+    public double CostInGBP { get; init; }
     public required string ImageUrl { get; init; }
     public required string Name { get; init; }
     public required string Description { get; init; }
