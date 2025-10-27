@@ -1,12 +1,12 @@
 ﻿services:
-  allthebeans:
-    container_name: allthebeans
-    image: allthebeans
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-     - 8080:8080
+#   allthebeans:
+#     container_name: allthebeans
+#     image: allthebeans
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#      - 8080:8080
   sqlserver:
     container_name: sqlserver
     image: mcr.microsoft.com/mssql/server:2022-latest

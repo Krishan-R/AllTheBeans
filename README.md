@@ -18,22 +18,16 @@ To run and debug this project:
 4. Run/Debug with Visual Studio
 5. The application should be available at [http://localhost:8080](http://localhost:8080)
 
-To run with Docker/Podman compose:
+During development, I was using a SQL Server deployed in a container, alongside a jaeger collector container to test tracing. 
+These can be spun up using the following command: 
 
-1. Ensure you have Docker/Podman compose installed
-2. Clone the repository
-3. From the root of the repository run the command `docker compose -f compose.yaml up -d`
-4. The application should be available at [http://localhost:8080](http://localhost:8080)
+```docker compose -f compose.yaml up -d```
 
-This will either pull or build the relevant images before spinning up containers.
+This will spin up a SQL Server database on port 1433 - if you already have a SQL Server installed locally you may need to change the port mapping in `compose.yaml`
 
-> Note, you may have issues running the MS SQL database container from an ARM based device.
+A jaeger collector will also spin up which is accessible from the WebUI at [http://localhost:16686](http://localhost:16686)
 
-If you make any changes to the project, you may need to delete the existing image to force docker compose to rebuild.
-
-This can be done with the following command:
-
-```docker image rm allthebeans```
+> Note, you may have issues running the MS SQL database container from ARM based devices.
 
 ## Database
 
