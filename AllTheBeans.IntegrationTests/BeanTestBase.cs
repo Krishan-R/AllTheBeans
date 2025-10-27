@@ -11,6 +11,11 @@ public abstract class BeanTestBase : IntegrationTestBase
         using var connection = new SqlConnection(ConnectionString);
         connection.Open();
 
+        const string sql = """
+                           INSERT INTO [dbo].[Beans] (Id, IsBOTD, CostInGBP, ImageUrl, [Name], Description, CountryId, ColourId)
+                           VALUES (@Id, 0, @CostInGbp, @ImageUrl, @Name, @Description, @CountryId, @ColourId)
+                           """;
+
         var parameters = new DynamicParameters();
         parameters.Add("@Id", id);
         parameters.Add("@CostInGbp", cost);
@@ -20,11 +25,7 @@ public abstract class BeanTestBase : IntegrationTestBase
         parameters.Add("@CountryId", countryId);
         parameters.Add("@ColourId", colourId);
 
-
-        connection.Execute("""
-                           INSERT INTO [dbo].[Beans] (Id, IsBOTD, CostInGBP, ImageUrl, [Name], Description, CountryId, ColourId)
-                           VALUES (@Id, 0, @CostInGbp, @ImageUrl, @Name, @Description, @CountryId, @ColourId)
-                           """, parameters);
+        connection.Execute(sql, parameters);
     }
 
     protected void UpdateCurrentBeanOfTheDay(DateTime dateTime)
@@ -32,11 +33,11 @@ public abstract class BeanTestBase : IntegrationTestBase
         using var connection = new SqlConnection(ConnectionString);
         connection.Open();
 
+        const string sql = "UPDATE [dbo].[BeanOfTheDay] SET Date = @DateTime";
+
         var parameters = new DynamicParameters();
         parameters.Add("@DateTime", dateTime);
 
-        connection.Execute("""
-                           UPDATE [dbo].[BeanOfTheDay] SET Date = @DateTime
-                           """, parameters);
+        connection.Execute(sql, parameters);
     }
 }
