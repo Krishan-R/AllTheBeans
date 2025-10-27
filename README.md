@@ -14,7 +14,7 @@ To run and debug this project:
 
 1. Clone the repository
 2. Restore the NuGet packages, either with Visual Studio or the `dotnet restore` command
-3. Ensure that configuration is correct in the `appsettings.json`, particularly the database connection string.
+3. Ensure that configuration is correct in the `appsettings.json` (or .NET User Secrets!), particularly the database connection string.
 4. Run/Debug with Visual Studio
 5. The application should be available at [http://localhost:8080](http://localhost:8080)
 
@@ -57,6 +57,8 @@ I made the conscious design choice when making the controllers to make the appli
 early on in the project as it can be annoying introducing async/await to an existing codebase. Having asynchronous code
 allows for better thread management than synchronous code, allowing for better scaling. Although this makes very
 little (or no) difference at this stage of the project, introducing it now will reduce headache in the future.
+
+I have included Swagger UI in this project as well, which is accessible by navigating to the root URL.
 
 In the future, this controller could be expanded to include authentication and authorisation to ensure that endpoints
 are only accessible to the correct users/roles/permissions.
