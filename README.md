@@ -14,20 +14,28 @@ To run and debug this project:
 
 1. Clone the repository
 2. Restore the NuGet packages, either with Visual Studio or the `dotnet restore` command
-3. Ensure that configuration is correct in the `appsettings.json` (or .NET User Secrets!), particularly the database connection string.
+3. Ensure that configuration is correct in the `appsettings.json` (or .NET User Secrets!), particularly the database
+   connection string.
 4. Run/Debug with Visual Studio
 5. The application should be available at [http://localhost:8080](http://localhost:8080)
 
-During development, I was using a SQL Server deployed in a container, alongside a jaeger collector container to test tracing. 
-These can be spun up using the following command: 
+During development, I was using a SQL Server deployed in a container, alongside a jaeger collector container to test
+tracing.
+These can be spun up using the following command:
 
 ```docker compose -f compose.yaml up -d```
 
-This will spin up a SQL Server database on port 1433 - if you already have a SQL Server installed locally you may need to change the port mapping in `compose.yaml`
+This will spin up a SQL Server database on port 1433 - if you already have a SQL Server installed locally you may need
+to change the port mapping in `compose.yaml`
 
-A jaeger collector will also spin up which is accessible from the WebUI at [http://localhost:16686](http://localhost:16686)
+A jaeger collector will also spin up which is accessible from the WebUI
+at [http://localhost:16686](http://localhost:16686)
 
 > Note, you may have issues running the MS SQL database container from ARM based devices.
+
+To run the integration tests, you must have a container orchestration tool, such as Docker or Podman. This project has
+been tested with Docker Desktop on Windows, however this should work out of the box with Docker on other platforms, or
+Podman.
 
 ## Database
 
